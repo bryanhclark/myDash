@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
-import NavBar from './NavBar'
+import { Route, Switch, Router } from 'react-router-dom'
+import { NavBar, Home, ToDo } from './index'
 
 
-class Main extends Component {
+export default class Main extends Component {
   render() {
     return (
       <div className='maincontainer'>
-        <NavBar />
+        <div>
+          <NavBar />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/todo' component={ToDo} />
+          </Switch>
+        </div>
       </div>
     )
   }
 }
 
 
-
-export default Main
