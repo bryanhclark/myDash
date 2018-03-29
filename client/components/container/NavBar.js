@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import AppBar from 'material-ui/AppBar'
-
-import { SideBar, ToggleButton } from './index'
+import { NavLink } from 'react-router-dom'
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { ToggleButton, IconMenuDropDown, NavBarMenuLinks } from '../index'
 
 class NavBar extends Component {
   constructor(props) {
@@ -21,9 +23,8 @@ class NavBar extends Component {
       <AppBar
         title='myDash'
         showMenuIconButton={false}
-        iconElementRight={<ToggleButton handleToggle={this.handleToggle} className='sideBar-Toggle-Button' />}
+        iconElementRight={<IconMenuDropDown items={NavBarMenuLinks} icon={<MoreVertIcon />} />}
       >
-        <SideBar open={this.state.isSidebarOpen} />
       </AppBar>
     )
   }

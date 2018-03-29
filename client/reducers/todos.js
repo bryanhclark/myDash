@@ -20,11 +20,21 @@ export const fetchAllTodos = () => {
   }
 }
 
+export const addNewTodo = todo => {
+  return dispatch => {
+    axios.post('/api/todos', todo)
+      .then(res => dispatch(addTodos(res.data)))
+      .catch(console.error)
+  }
+}
+
 
 export default (state = [], action) => {
   switch (action.type) {
     case GET_TODOS:
       return action.todos
+    case ADD_TODOS:
+      return [...state, action.newTodo]
     default:
       return state
   }

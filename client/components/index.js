@@ -1,6 +1,13 @@
 export { default as App } from './App'
-export { default as Home } from './Home'
-export { default as Todo } from './Todo'
-export { default as NavBar } from './NavBar'
-export { default as SideBar } from './SideBar'
-export { default as ToggleButton } from './ToggleButton'
+
+//container components
+export { default as Home } from './container/Home'
+export { default as NavBar } from './container/NavBar'
+export { default as Todo } from './container/Todo'
+
+//presentational components
+
+//utility components
+export { default as ToggleButton } from './utility/ToggleButton'
+export { default as IconMenuDropDown } from './utility/IconMenuDropDown'
+export { default as NavBarMenuLinks } from './utility/NavBarMenuLinks'

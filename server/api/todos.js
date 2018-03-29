@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   Todo.create({
-    description: req.body.description
+    data: req.body.description
   })
     .then(todo => res.json(todo))
     .catch(next)
