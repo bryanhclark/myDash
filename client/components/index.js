@@ -6,8 +6,11 @@ export { default as NavBar } from './container/NavBar'
 export { default as Todo } from './container/Todo'
 
 //presentational components
+export { default as ToDoList } from './presentational/ToDoList'
+export { default as ToDoInputForm } from './presentational/ToDoInputForm'
 
 //utility components
 export { default as ToggleButton } from './utility/ToggleButton'
 export { default as IconMenuDropDown } from './utility/IconMenuDropDown'
 export { default as NavBarMenuLinks } from './utility/NavBarMenuLinks'
+export { default as ToDoListFunctional } from './utility/ToDoListFunctional'
