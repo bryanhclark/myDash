@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 
 
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
   }
@@ -10,9 +10,12 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className='homeMainContainer'>
+      <div className='home-Main-Container'>
         <h3>Home Page</h3>
       </div>
     )
   }
 }
+
+
+module.exports = Home

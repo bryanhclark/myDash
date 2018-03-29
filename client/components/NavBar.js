@@ -1,23 +1,39 @@
 import React, { Component } from 'react'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import AppBar from 'material-ui/AppBar'
 
+import { SideBar, ToggleButton } from './index'
 
-export default class NavBar extends Component {
+class NavBar extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      isSidebarOpen: false
+    }
+    this.handleToggle = this.handleToggle.bind(this)
+  }
+
+  handleToggle() {
+    this.setState({ isSidebarOpen: !this.state.isSidebarOpen })
   }
 
   render() {
     return (
-      <Toolbar className='navbarMain' style={style}>
-        <ToolbarTitle text='myDash' />
-      </Toolbar>
+      <AppBar
+        title='myDash'
+        showMenuIconButton={false}
+        iconElementRight={<ToggleButton handleToggle={this.handleToggle} className='sideBar-Toggle-Button' />}
+      >
+        <SideBar open={this.state.isSidebarOpen} />
+      </AppBar>
     )
   }
 }
 
 
 
-const style = {
-  backgroundColor: "#00E676"
-}
+
+
+
+
+
+module.exports = NavBar

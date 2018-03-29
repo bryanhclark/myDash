@@ -1,7 +1,7 @@
 {
   "name": "myDash",
   "version": "1.0.0",
-  "description": "personal dashboard to optimize organization and practice learning new techniques",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "build-client": "webpack",
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/bryanhclark/myDash#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "material-ui": "^0.20.0",
@@ -36,6 +37,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.35.2",
@@ -49,7 +51,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
-    "css-loader": "^0.28.10",
+    "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.2",

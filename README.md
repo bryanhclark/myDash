@@ -1,2 +1,1 @@
-# myDash
-personal dashboard to optimize organization and practice learning new techniques
+## myDash is a SPA that will organize most of my life, hopefully

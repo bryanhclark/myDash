@@ -3,11 +3,10 @@ const morgan = require('morgan')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const db = require('./db')
+const db = require('./db/db')
 const PORT = process.env.PORT || 8080
 
 module.export = app
-
 app.use(morgan('dev'))
 
 app.use(express.static(path.join(__dirname, '../public')))
@@ -15,10 +14,10 @@ app.use(express.static(path.join(__dirname, '../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.use('./api', require('./api'))
+app.use('/api', require('./api'))
 
 app.get('*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, ('../public/index.html')))
+  res.sendFile(path.join(__dirname, ('../public/')))
 })
 
 app.use((err, req, res, next) => {
@@ -26,9 +25,9 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send(err.message || 'Internal Server error')
 })
 
-db.sync()
+db.sync({ force: true })
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Listening on Port: ${PORT}`)
+      console.log(`Listening on PORT: ${PORT}`)
     })
   })
