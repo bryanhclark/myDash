@@ -1,3 +1,19 @@
 body {
   margin: 0;
 }
+
+.todoList{
+  list-style: none;
+  margin: 10px;
+  padding:0;
+}
+
+.todo-Item{
+  text-align: center;
+  
+  padding: 10px;
+}
+
+.todo-Paper{
+  margin-top: 20px;
+}

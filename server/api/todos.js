@@ -1,17 +1,18 @@
 const router = require('express').Router()
-const { Todo } = require('../db/models')
+const { ToDos } = require('../db/models')
 
 router.get('/', (req, res, next) => {
-  Todo.findAll()
+  ToDos.findAll()
     .then(todos => {
-      res.json(todo)
+      res.json(todos)
     })
     .catch(next)
 })
 
 router.post('/', (req, res, next) => {
-  Todo.create({
-    data: req.body.description
+
+  ToDos.create({
+    data: req.body.todo
   })
     .then(todo => res.json(todo))
     .catch(next)

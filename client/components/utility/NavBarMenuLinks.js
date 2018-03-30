@@ -5,9 +5,9 @@ import MenuItem from 'material-ui/MenuItem';
 
 const NavBarMenuLinks = [
   {
-    key: 1,
     data: (
       <MenuItem
+        key={1}
         containerElement={<NavLink to={'/'} />}
         value="1"
         primaryText="Home"
@@ -15,11 +15,11 @@ const NavBarMenuLinks = [
     ),
   },
   {
-    key: 2,
     data: (
       <MenuItem
+        key={2}
         containerElement={<NavLink to={'/todo'} />}
-        value="1"
+        value="2"
         primaryText="Todo List"
       />
     ),

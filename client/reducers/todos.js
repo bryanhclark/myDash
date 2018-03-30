@@ -5,9 +5,13 @@ const GET_TODOS = 'GET_TODOS'
 const ADD_TODOS = 'ADD_TODOS'
 
 //ACTION CREATORS
-const getTodos = todos => { type: GET_TODOS, todos }
+const getTodos = todos => {
+  return { type: GET_TODOS, todos }
+}
 
-const addTodos = newTodo => { type: ADD_TODOS, newTodo }
+const addTodos = newTodo => {
+  return { type: ADD_TODOS, newTodo }
+}
 
 
 //THUNKS
@@ -22,7 +26,7 @@ export const fetchAllTodos = () => {
 
 export const addNewTodo = todo => {
   return dispatch => {
-    axios.post('/api/todos', todo)
+    axios.post('/api/todos', { todo })
       .then(res => dispatch(addTodos(res.data)))
       .catch(console.error)
   }

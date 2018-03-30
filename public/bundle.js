@@ -279,6 +279,10 @@ module.exports = NavBar;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -286,6 +290,14 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var _react2 = _interopRequireDefault(_react);
 
 var _index = __webpack_require__(/*! ../index */ "./client/components/index.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _todos = __webpack_require__(/*! ../../reducers/todos */ "./client/reducers/todos.js");
+
+var _Paper = __webpack_require__(/*! material-ui/Paper */ "./node_modules/material-ui/Paper/index.js");
+
+var _Paper2 = _interopRequireDefault(_Paper);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -307,18 +319,47 @@ var Todo = function (_Component) {
       currentToDoInput: ''
     };
     _this.handleToDoInputChange = _this.handleToDoInputChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
   _createClass(Todo, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.getAllTodosDispatch();
+    }
+  }, {
     key: 'handleToDoInputChange',
     value: function handleToDoInputChange(e) {
       this.setState({ currentToDoInput: e.target.value });
     }
   }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(e, todo) {
+      this.props.handleSubmitDispatch(todo);
+      this.setState({ currentToDoInput: '' });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      console.log('this.state.currentToDoInput', this.state.currentToDoInput);
+      var todoList = this.props.todos ? this.props.todos.map(function (todo) {
+        return _react2.default.createElement(
+          _Paper2.default,
+          {
+            className: 'todo-Paper',
+            zDepth: 1
+          },
+          _react2.default.createElement(
+            'div',
+            { className: 'todo-Item' },
+            _react2.default.createElement(
+              'li',
+              { key: todo.id },
+              todo.data
+            )
+          )
+        );
+      }) : 'loading';
       return _react2.default.createElement(
         'div',
         { className: 'todo-Main-Container' },
@@ -327,7 +368,20 @@ var Todo = function (_Component) {
           null,
           'Todo List:'
         ),
-        _react2.default.createElement(_index.ToDoInputForm, { onChange: this.handleToDoInputChange, value: this.state.currentToDoInput })
+        _react2.default.createElement(_index.ToDoInputForm, {
+          onChange: this.handleToDoInputChange,
+          value: this.state.currentToDoInput,
+          onSubmit: this.handleSubmit
+        }),
+        _react2.default.createElement(
+          'div',
+          { className: 'todo-List-Container' },
+          _react2.default.createElement(
+            'ul',
+            { className: 'todoList' },
+            todoList
+          )
+        )
       );
     }
   }]);
@@ -335,7 +389,24 @@ var Todo = function (_Component) {
   return Todo;
 }(_react.Component);
 
-module.exports = Todo;
+var mapState = function mapState(state) {
+  return {
+    todos: state.todos
+  };
+};
+
+var mapDispatch = function mapDispatch(dispatch, ownProps) {
+  return {
+    handleSubmitDispatch: function handleSubmitDispatch(todo) {
+      dispatch((0, _todos.addNewTodo)(todo));
+    },
+    getAllTodosDispatch: function getAllTodosDispatch() {
+      dispatch((0, _todos.fetchAllTodos)());
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Todo);
 
 /***/ }),
 
@@ -469,16 +540,30 @@ var _TextField = __webpack_require__(/*! material-ui/TextField */ "./node_module
 
 var _TextField2 = _interopRequireDefault(_TextField);
 
+var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ToDoInpurForm = function ToDoInpurForm(props) {
-    return _react2.default.createElement(_TextField2.default, {
-        onChange: props.onChange,
-        value: props.value
-    });
+var ToDoInputForm = function ToDoInputForm(props) {
+    return _react2.default.createElement(
+        'div',
+        { className: 'todo-Form-Container' },
+        _react2.default.createElement(_TextField2.default, {
+            onChange: props.onChange,
+            value: props.value
+        }),
+        _react2.default.createElement(_RaisedButton2.default, {
+            label: 'Submit',
+            onClick: function onClick(e) {
+                return props.onSubmit(e, props.value);
+            }
+        })
+    );
 };
 
-exports.default = ToDoInpurForm;
+exports.default = ToDoInputForm;
 
 /***/ }),
 
@@ -590,17 +675,17 @@ var _MenuItem2 = _interopRequireDefault(_MenuItem);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NavBarMenuLinks = [{
-  key: 1,
   data: _react2.default.createElement(_MenuItem2.default, {
+    key: 1,
     containerElement: _react2.default.createElement(_reactRouterDom.NavLink, { to: '/' }),
     value: '1',
     primaryText: 'Home'
   })
 }, {
-  key: 2,
   data: _react2.default.createElement(_MenuItem2.default, {
+    key: 2,
     containerElement: _react2.default.createElement(_reactRouterDom.NavLink, { to: '/todo' }),
-    value: '1',
+    value: '2',
     primaryText: 'Todo List'
   })
 }];
@@ -800,11 +885,11 @@ var ADD_TODOS = 'ADD_TODOS';
 
 //ACTION CREATORS
 var getTodos = function getTodos(todos) {
-  type: GET_TODOS, todos;
+  return { type: GET_TODOS, todos: todos };
 };
 
 var addTodos = function addTodos(newTodo) {
-  type: ADD_TODOS, newTodo;
+  return { type: ADD_TODOS, newTodo: newTodo };
 };
 
 //THUNKS
@@ -819,7 +904,7 @@ var fetchAllTodos = exports.fetchAllTodos = function fetchAllTodos() {
 
 var addNewTodo = exports.addNewTodo = function addNewTodo(todo) {
   return function (dispatch) {
-    _axios2.default.post('/api/todos', todo).then(function (res) {
+    _axios2.default.post('/api/todos', { todo: todo }).then(function (res) {
       return dispatch(addTodos(res.data));
     }).catch(console.error);
   };
