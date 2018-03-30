@@ -8,9 +8,11 @@ export { default as Todo } from './container/Todo'
 //presentational components
 export { default as ToDoList } from './presentational/ToDoList'
 export { default as ToDoInputForm } from './presentational/ToDoInputForm'
+export { default as ToDoListItem } from './presentational/ToDoListItem'
 
 //utility components
 export { default as ToggleButton } from './utility/ToggleButton'
 export { default as IconMenuDropDown } from './utility/IconMenuDropDown'
 export { default as NavBarMenuLinks } from './utility/NavBarMenuLinks'
-export { default as ToDoListFunctional } from './utility/ToDoListFunctional'
+export { default as PaperDiv } from './utility/PaperDiv'
+export { default as Button } from './utility/Button'

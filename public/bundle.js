@@ -342,45 +342,27 @@ var Todo = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var todoList = this.props.todos ? this.props.todos.map(function (todo) {
-        return _react2.default.createElement(
-          _Paper2.default,
-          {
-            className: 'todo-Paper',
-            zDepth: 1
-          },
-          _react2.default.createElement(
-            'div',
-            { className: 'todo-Item' },
-            _react2.default.createElement(
-              'li',
-              { key: todo.id },
-              todo.data
-            )
-          )
-        );
-      }) : 'loading';
       return _react2.default.createElement(
         'div',
         { className: 'todo-Main-Container' },
         _react2.default.createElement(
-          'h3',
-          null,
-          'Todo List:'
+          'div',
+          { className: 'todo-Form-Container' },
+          _react2.default.createElement(
+            'p',
+            null,
+            'Todo List:'
+          ),
+          _react2.default.createElement(_index.ToDoInputForm, {
+            onChange: this.handleToDoInputChange,
+            value: this.state.currentToDoInput,
+            onSubmit: this.handleSubmit
+          })
         ),
-        _react2.default.createElement(_index.ToDoInputForm, {
-          onChange: this.handleToDoInputChange,
-          value: this.state.currentToDoInput,
-          onSubmit: this.handleSubmit
-        }),
         _react2.default.createElement(
           'div',
           { className: 'todo-List-Container' },
-          _react2.default.createElement(
-            'ul',
-            { className: 'todoList' },
-            todoList
-          )
+          _react2.default.createElement(_index.ToDoList, { todos: this.props.todos })
         )
       );
     }
@@ -478,6 +460,15 @@ Object.defineProperty(exports, 'ToDoInputForm', {
   }
 });
 
+var _ToDoListItem = __webpack_require__(/*! ./presentational/ToDoListItem */ "./client/components/presentational/ToDoListItem.js");
+
+Object.defineProperty(exports, 'ToDoListItem', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_ToDoListItem).default;
+  }
+});
+
 var _ToggleButton = __webpack_require__(/*! ./utility/ToggleButton */ "./client/components/utility/ToggleButton.js");
 
 Object.defineProperty(exports, 'ToggleButton', {
@@ -505,12 +496,21 @@ Object.defineProperty(exports, 'NavBarMenuLinks', {
   }
 });
 
-var _ToDoListFunctional = __webpack_require__(/*! ./utility/ToDoListFunctional */ "./client/components/utility/ToDoListFunctional.js");
+var _PaperDiv = __webpack_require__(/*! ./utility/PaperDiv */ "./client/components/utility/PaperDiv.js");
 
-Object.defineProperty(exports, 'ToDoListFunctional', {
+Object.defineProperty(exports, 'PaperDiv', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_ToDoListFunctional).default;
+    return _interopRequireDefault(_PaperDiv).default;
+  }
+});
+
+var _Button = __webpack_require__(/*! ./utility/Button */ "./client/components/utility/Button.js");
+
+Object.defineProperty(exports, 'Button', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Button).default;
   }
 });
 
@@ -585,13 +585,108 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _index = __webpack_require__(/*! ../index */ "./client/components/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ToDoList = function ToDoList(props) {
-  return _react2.default.createElement('div', { className: 'todo-List-Functional-Container' });
+  var myTodos = props.todos ? props.todos.map(function (todo) {
+    return _react2.default.createElement(
+      _index.PaperDiv,
+      { key: todo.id },
+      _react2.default.createElement(_index.ToDoListItem, { todo: todo })
+    );
+  }) : _react2.default.createElement(
+    'h2',
+    null,
+    '\'Loading\''
+  );
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'todo-List-Functional-Container' },
+    myTodos
+  );
 };
 
 exports.default = ToDoList;
+
+/***/ }),
+
+/***/ "./client/components/presentational/ToDoListItem.js":
+/*!**********************************************************!*\
+  !*** ./client/components/presentational/ToDoListItem.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ToDoListItem = function ToDoListItem(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'todo-List-Item-Container' },
+    _react2.default.createElement(
+      'p',
+      null,
+      props.todo.data
+    )
+  );
+};
+
+exports.default = ToDoListItem;
+
+/***/ }),
+
+/***/ "./client/components/utility/Button.js":
+/*!*********************************************!*\
+  !*** ./client/components/utility/Button.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ "./node_modules/material-ui/FloatingActionButton/index.js");
+
+var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Button = function Button(props) {
+  return _react2.default.createElement(
+    _FloatingActionButton2.default,
+    {
+      onClick: props.onClick,
+      className: props.class,
+      mini: props.mini,
+      zDepth: 0
+    },
+    props.icon
+  );
+};
+
+exports.default = Button;
 
 /***/ }),
 
@@ -694,10 +789,10 @@ exports.default = NavBarMenuLinks;
 
 /***/ }),
 
-/***/ "./client/components/utility/ToDoListFunctional.js":
-/*!*********************************************************!*\
-  !*** ./client/components/utility/ToDoListFunctional.js ***!
-  \*********************************************************/
+/***/ "./client/components/utility/PaperDiv.js":
+/*!***********************************************!*\
+  !*** ./client/components/utility/PaperDiv.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -708,15 +803,82 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Paper = __webpack_require__(/*! material-ui/Paper */ "./node_modules/material-ui/Paper/index.js");
+
+var _Paper2 = _interopRequireDefault(_Paper);
+
+var _index = __webpack_require__(/*! ../index */ "./client/components/index.js");
+
+var _modeEdit = __webpack_require__(/*! material-ui/svg-icons/editor/mode-edit */ "./node_modules/material-ui/svg-icons/editor/mode-edit.js");
+
+var _modeEdit2 = _interopRequireDefault(_modeEdit);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ToDoList = function ToDoList(props) {};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-exports.default = ToDoList;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PaperDiv = function (_Component) {
+  _inherits(PaperDiv, _Component);
+
+  function PaperDiv(props) {
+    _classCallCheck(this, PaperDiv);
+
+    var _this = _possibleConstructorReturn(this, (PaperDiv.__proto__ || Object.getPrototypeOf(PaperDiv)).call(this, props));
+
+    _this.onMouseOver = function () {
+      return _this.setState({ hoverIndex: 3 });
+    };
+
+    _this.onMouseOut = function () {
+      return _this.setState({ hoverIndex: 1 });
+    };
+
+    _this.state = {
+      hoverIndex: 1
+    };
+    _this.onMouseOut = _this.onMouseOut.bind(_this);
+    _this.onMouseOver = _this.onMouseOver.bind(_this);
+    return _this;
+  }
+
+  _createClass(PaperDiv, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'todo-List-Item-Container' },
+        _react2.default.createElement(
+          _Paper2.default,
+          {
+            className: 'paper-Container',
+            onMouseOver: this.onMouseOver,
+            onMouseOut: this.onMouseOut,
+            zDepth: this.state.hoverIndex
+          },
+          this.props.children
+        ),
+        _react2.default.createElement(_index.Button, {
+          'class': 'edit-Button',
+          mini: 'true',
+          icon: _react2.default.createElement(_modeEdit2.default, null) })
+      );
+    }
+  }]);
+
+  return PaperDiv;
+}(_react.Component);
+
+exports.default = PaperDiv;
 
 /***/ }),
 
@@ -23595,6 +23757,49 @@ ContentAdd.displayName = 'ContentAdd';
 ContentAdd.muiName = 'SvgIcon';
 
 exports.default = ContentAdd;
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/svg-icons/editor/mode-edit.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/material-ui/svg-icons/editor/mode-edit.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__(/*! recompose/pure */ "./node_modules/recompose/pure.js");
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__(/*! ../../SvgIcon */ "./node_modules/material-ui/SvgIcon/index.js");
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EditorModeEdit = function EditorModeEdit(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _react2.default.createElement('path', { d: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' })
+  );
+};
+EditorModeEdit = (0, _pure2.default)(EditorModeEdit);
+EditorModeEdit.displayName = 'EditorModeEdit';
+EditorModeEdit.muiName = 'SvgIcon';
+
+exports.default = EditorModeEdit;
 
 /***/ }),
 
