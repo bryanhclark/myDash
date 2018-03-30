@@ -3,7 +3,7 @@ body {
 }
 
 p{
-  margin: 0;
+  margin: 3px;
 }
 
 .todo-Main-Container{
@@ -15,11 +15,15 @@ p{
 .todo-List-Item-Container{
   text-align: center;
   padding: 5px;
-  width: 250px;
 }
 .todo-List-Functional-Container{
   display: flex;
   flex-direction: column;
+}
+
+.todo-List-Item{
+  display: flex;
+  margin: auto ;
 }
 
 .todo-Form-Container{
@@ -28,12 +32,26 @@ p{
 
 .todo-List-Item-Container{
   display: flex;
+  margin: 5px;
   flex-direction: row;
+  align-items: center;
 }
 
 .paper-Container{
-  display: inline-block;
- margin: 10px;
+  display: inline-flex;
+  height: 50px;
   width: 250px;
 }
+
+.button-Invisible{
+  display: none;
+}
+
+.button-Visible{
+  display: inline;
+  margin: 10px;
+}
+
+
+
 

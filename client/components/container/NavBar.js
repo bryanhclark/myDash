@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar'
 import { NavLink } from 'react-router-dom'
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { ToggleButton, IconMenuDropDown, NavBarMenuLinks } from '../index'
+import { IconMenuDropDown, NavBarMenuLinks } from '../index'
 
 class NavBar extends Component {
   constructor(props) {

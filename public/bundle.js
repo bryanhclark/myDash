@@ -469,15 +469,6 @@ Object.defineProperty(exports, 'ToDoListItem', {
   }
 });
 
-var _ToggleButton = __webpack_require__(/*! ./utility/ToggleButton */ "./client/components/utility/ToggleButton.js");
-
-Object.defineProperty(exports, 'ToggleButton', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_ToggleButton).default;
-  }
-});
-
 var _IconMenuDropDown = __webpack_require__(/*! ./utility/IconMenuDropDown */ "./client/components/utility/IconMenuDropDown.js");
 
 Object.defineProperty(exports, 'IconMenuDropDown', {
@@ -636,7 +627,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ToDoListItem = function ToDoListItem(props) {
   return _react2.default.createElement(
     'div',
-    { className: 'todo-List-Item-Container' },
+    { className: 'todo-List-Item' },
     _react2.default.createElement(
       'p',
       null,
@@ -675,14 +666,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Button = function Button(props) {
   return _react2.default.createElement(
-    _FloatingActionButton2.default,
-    {
-      onClick: props.onClick,
-      className: props.class,
-      mini: props.mini,
-      zDepth: 0
-    },
-    props.icon
+    'div',
+    { className: props.buttonClass },
+    _react2.default.createElement(
+      _FloatingActionButton2.default,
+      {
+        onClick: props.onClick,
+        mini: props.mini,
+        zDepth: 2
+      },
+      props.icon
+    )
   );
 };
 
@@ -815,6 +809,10 @@ var _Paper2 = _interopRequireDefault(_Paper);
 
 var _index = __webpack_require__(/*! ../index */ "./client/components/index.js");
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _todos = __webpack_require__(/*! ../../reducers/todos */ "./client/reducers/todos.js");
+
 var _modeEdit = __webpack_require__(/*! material-ui/svg-icons/editor/mode-edit */ "./node_modules/material-ui/svg-icons/editor/mode-edit.js");
 
 var _modeEdit2 = _interopRequireDefault(_modeEdit);
@@ -836,15 +834,22 @@ var PaperDiv = function (_Component) {
     var _this = _possibleConstructorReturn(this, (PaperDiv.__proto__ || Object.getPrototypeOf(PaperDiv)).call(this, props));
 
     _this.onMouseOver = function () {
-      return _this.setState({ hoverIndex: 3 });
+      return _this.setState({
+        hoverIndex: 2,
+        buttonClass: 'button-Visible'
+      });
     };
 
     _this.onMouseOut = function () {
-      return _this.setState({ hoverIndex: 1 });
+      return _this.setState({
+        hoverIndex: 1,
+        buttonClass: 'button-Invisible'
+      });
     };
 
     _this.state = {
-      hoverIndex: 1
+      hoverIndex: 1,
+      buttonClass: 'button-Invisible'
     };
     _this.onMouseOut = _this.onMouseOut.bind(_this);
     _this.onMouseOver = _this.onMouseOver.bind(_this);
@@ -854,22 +859,28 @@ var PaperDiv = function (_Component) {
   _createClass(PaperDiv, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
-        { className: 'todo-List-Item-Container' },
+        {
+          className: 'todo-List-Item-Container',
+          onMouseOver: this.onMouseOver,
+          onMouseOut: this.onMouseOut },
         _react2.default.createElement(
           _Paper2.default,
           {
             className: 'paper-Container',
-            onMouseOver: this.onMouseOver,
-            onMouseOut: this.onMouseOut,
             zDepth: this.state.hoverIndex
           },
           this.props.children
         ),
         _react2.default.createElement(_index.Button, {
-          'class': 'edit-Button',
-          mini: 'true',
+          onClick: function onClick(e) {
+            return _this2.props.handleDelete(e, _this2.props.children.props.todo.id);
+          },
+          buttonClass: this.state.buttonClass,
+          mini: true,
           icon: _react2.default.createElement(_modeEdit2.default, null) })
       );
     }
@@ -878,45 +889,15 @@ var PaperDiv = function (_Component) {
   return PaperDiv;
 }(_react.Component);
 
-exports.default = PaperDiv;
-
-/***/ }),
-
-/***/ "./client/components/utility/ToggleButton.js":
-/*!***************************************************!*\
-  !*** ./client/components/utility/ToggleButton.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ "./node_modules/material-ui/FloatingActionButton/index.js");
-
-var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
-
-var _add = __webpack_require__(/*! material-ui/svg-icons/content/add */ "./node_modules/material-ui/svg-icons/content/add.js");
-
-var _add2 = _interopRequireDefault(_add);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var toggleButton = function toggleButton(props) {
-  return _react2.default.createElement(
-    _FloatingActionButton2.default,
-    {
-      onClick: props.handleToggle
-    },
-    _react2.default.createElement(_add2.default, null)
-  );
+var mapDispatch = function mapDispatch(dispatch, ownProps) {
+  return {
+    handleDelete: function handleDelete(e, todoId) {
+      dispatch((0, _todos.deleteToDo)(todoId));
+    }
+  };
 };
 
-module.exports = toggleButton;
+exports.default = (0, _reactRedux.connect)(null, mapDispatch)(PaperDiv);
 
 /***/ }),
 
@@ -1031,7 +1012,7 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addNewTodo = exports.fetchAllTodos = undefined;
+exports.deleteToDo = exports.addNewTodo = exports.fetchAllTodos = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -1044,6 +1025,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //action types
 var GET_TODOS = 'GET_TODOS';
 var ADD_TODOS = 'ADD_TODOS';
+var DELETE_TODO = 'DELETE_TODO';
 
 //ACTION CREATORS
 var getTodos = function getTodos(todos) {
@@ -1052,6 +1034,10 @@ var getTodos = function getTodos(todos) {
 
 var addTodos = function addTodos(newTodo) {
   return { type: ADD_TODOS, newTodo: newTodo };
+};
+
+var deleteTodo = function deleteTodo(todoId) {
+  return { type: DELETE_TODO, todoId: todoId };
 };
 
 //THUNKS
@@ -1072,6 +1058,14 @@ var addNewTodo = exports.addNewTodo = function addNewTodo(todo) {
   };
 };
 
+var deleteToDo = exports.deleteToDo = function deleteToDo(todoId) {
+  return function (dispatch) {
+    _axios2.default.delete('/api/todos', { params: { todoId: todoId } }).then(function () {
+      return dispatch(deleteTodo(todoId));
+    }).catch(console.error);
+  };
+};
+
 exports.default = function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments[1];
@@ -1081,6 +1075,10 @@ exports.default = function () {
       return action.todos;
     case ADD_TODOS:
       return [].concat(_toConsumableArray(state), [action.newTodo]);
+    case DELETE_TODO:
+      return state.filter(function (todo) {
+        return todo.id !== action.todoId;
+      });
     default:
       return state;
   }
@@ -23714,49 +23712,6 @@ exports.default = {
   snackbar: 2900,
   tooltip: 3000
 };
-
-/***/ }),
-
-/***/ "./node_modules/material-ui/svg-icons/content/add.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/material-ui/svg-icons/content/add.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _pure = __webpack_require__(/*! recompose/pure */ "./node_modules/recompose/pure.js");
-
-var _pure2 = _interopRequireDefault(_pure);
-
-var _SvgIcon = __webpack_require__(/*! ../../SvgIcon */ "./node_modules/material-ui/SvgIcon/index.js");
-
-var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ContentAdd = function ContentAdd(props) {
-  return _react2.default.createElement(
-    _SvgIcon2.default,
-    props,
-    _react2.default.createElement('path', { d: 'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z' })
-  );
-};
-ContentAdd = (0, _pure2.default)(ContentAdd);
-ContentAdd.displayName = 'ContentAdd';
-ContentAdd.muiName = 'SvgIcon';
-
-exports.default = ContentAdd;
 
 /***/ }),
 

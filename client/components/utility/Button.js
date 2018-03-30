@@ -4,14 +4,15 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 
 const Button = props => (
-  <FloatingActionButton
-    onClick={props.onClick}
-    className={props.class}
-    mini={props.mini}
-    zDepth={0}
-  >
-    {props.icon}
-  </FloatingActionButton>
+  <div className={props.buttonClass}>
+    <FloatingActionButton
+      onClick={props.onClick}
+      mini={props.mini}
+      zDepth={2}
+    >
+      {props.icon}
+    </FloatingActionButton>
+  </div>
 )
 
 

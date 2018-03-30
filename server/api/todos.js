@@ -18,5 +18,15 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
+router.delete('/', (req, res, next) => {
+  ToDos.destroy({
+    where: {
+      id: req.query.todoId
+    }
+  })
+    .then(didDestroy => res.json(didDestroy))
+    .catch(next)
+})
+
 
 module.exports = router
