@@ -37,6 +37,15 @@ p{
   align-items: center;
 }
 
+.todo-Item-Completed{
+  text-decoration-color: indianred;
+  text-decoration-line: line-through;
+}
+
+.todo-Item-Active{
+  text-decoration-line: none;
+}
+
 .paper-Container{
   display: inline-flex;
   height: 50px;
@@ -50,6 +59,10 @@ p{
 .button-Visible{
   display: inline;
   margin: 10px;
+}
+
+.visibility-Buttons-Container{
+  margin: 5px;
 }
 
 

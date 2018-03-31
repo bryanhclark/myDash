@@ -8,12 +8,26 @@ export const visibilityFilters = {
   SHOW_ACTIVE: 'SHOW_ACTIVE'
 }
 
+//VISIBILITYFilterMethod
+export const filterTodos = (todos, status) => {
+  if (status === 'SHOW_COMPLETED') return todos.filter(todo => todo.completed)
+  else if (status === 'SHOW_ACTIVE') return todos.filter(todo => !todo.completed)
+  else return todos
+}
+
+
 //ACTION CREATORS
 
 export const setVisibilityFilter = filter => ({
   type: SET_VISIBILITY_FILTER,
   filter
 })
+
+export const setVisibilityFilterDispatch = filter => {
+  return dispatch => {
+    dispatch(setVisibilityFilter(filter))
+  }
+}
 
 //subReducer
 export default (state = visibilityFilters.SHOW_ALL, action) => {

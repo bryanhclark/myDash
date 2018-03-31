@@ -295,6 +295,8 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _todos = __webpack_require__(/*! ../../reducers/todos */ "./client/reducers/todos.js");
 
+var _visibilityFilter = __webpack_require__(/*! ../../reducers/visibilityFilter */ "./client/reducers/visibilityFilter.js");
+
 var _Paper = __webpack_require__(/*! material-ui/Paper */ "./node_modules/material-ui/Paper/index.js");
 
 var _Paper2 = _interopRequireDefault(_Paper);
@@ -342,27 +344,25 @@ var Todo = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var todoList = (0, _visibilityFilter.filterTodos)(this.props.todos, this.props.visibilityFilter);
       return _react2.default.createElement(
         'div',
         { className: 'todo-Main-Container' },
         _react2.default.createElement(
-          'div',
-          { className: 'todo-Form-Container' },
-          _react2.default.createElement(
-            'p',
-            null,
-            'Todo List:'
-          ),
-          _react2.default.createElement(_index.ToDoInputForm, {
-            onChange: this.handleToDoInputChange,
-            value: this.state.currentToDoInput,
-            onSubmit: this.handleSubmit
-          })
+          'p',
+          null,
+          'Todo List:'
         ),
+        _react2.default.createElement(_index.ToDoInputForm, {
+          onChange: this.handleToDoInputChange,
+          value: this.state.currentToDoInput,
+          onSubmit: this.handleSubmit
+        }),
+        _react2.default.createElement(_index.VisibilityFilterButtons, { handleFilterChange: this.props.handleFilterChange }),
         _react2.default.createElement(
           'div',
           { className: 'todo-List-Container' },
-          _react2.default.createElement(_index.ToDoList, { todos: this.props.todos })
+          _react2.default.createElement(_index.ToDoList, { todos: todoList })
         )
       );
     }
@@ -373,7 +373,8 @@ var Todo = function (_Component) {
 
 var mapState = function mapState(state) {
   return {
-    todos: state.todos
+    todos: state.todos,
+    visibilityFilter: state.visibilityFilter
   };
 };
 
@@ -384,6 +385,9 @@ var mapDispatch = function mapDispatch(dispatch, ownProps) {
     },
     getAllTodosDispatch: function getAllTodosDispatch() {
       dispatch((0, _todos.fetchAllTodos)());
+    },
+    handleFilterChange: function handleFilterChange(filter) {
+      dispatch((0, _visibilityFilter.setVisibilityFilterDispatch)(filter));
     }
   };
 };
@@ -469,6 +473,15 @@ Object.defineProperty(exports, 'ToDoListItem', {
   }
 });
 
+var _VisibilityFilterButtons = __webpack_require__(/*! ./presentational/VisibilityFilterButtons */ "./client/components/presentational/VisibilityFilterButtons.js");
+
+Object.defineProperty(exports, 'VisibilityFilterButtons', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_VisibilityFilterButtons).default;
+  }
+});
+
 var _IconMenuDropDown = __webpack_require__(/*! ./utility/IconMenuDropDown */ "./client/components/utility/IconMenuDropDown.js");
 
 Object.defineProperty(exports, 'IconMenuDropDown', {
@@ -542,10 +555,12 @@ var ToDoInputForm = function ToDoInputForm(props) {
         'div',
         { className: 'todo-Form-Container' },
         _react2.default.createElement(_TextField2.default, {
+            id: 'todo-Input-TextField',
             onChange: props.onChange,
             value: props.value
         }),
         _react2.default.createElement(_RaisedButton2.default, {
+            id: 'todo-Submit-Button',
             label: 'Submit',
             onClick: function onClick(e) {
                 return props.onSubmit(e, props.value);
@@ -625,18 +640,73 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ToDoListItem = function ToDoListItem(props) {
+  var myClassName = props.todo.completed ? 'todo-Item-Completed' : 'todo-Item-Active';
   return _react2.default.createElement(
     'div',
     { className: 'todo-List-Item' },
     _react2.default.createElement(
       'p',
-      null,
+      { className: myClassName },
+      ' ',
       props.todo.data
     )
   );
 };
 
 exports.default = ToDoListItem;
+
+/***/ }),
+
+/***/ "./client/components/presentational/VisibilityFilterButtons.js":
+/*!*********************************************************************!*\
+  !*** ./client/components/presentational/VisibilityFilterButtons.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var VisibilityFilterButtons = function VisibilityFilterButtons(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'visibility-Buttons-Container' },
+    _react2.default.createElement(_RaisedButton2.default, {
+      label: 'Show All',
+      onClick: function onClick(e) {
+        return props.handleFilterChange('SHOW_ALL');
+      }
+    }),
+    _react2.default.createElement(_RaisedButton2.default, {
+      label: 'Show Active',
+      onClick: function onClick(e) {
+        return props.handleFilterChange('SHOW_ACTIVE');
+      }
+    }),
+    _react2.default.createElement(_RaisedButton2.default, {
+      label: 'Show Completed',
+      onClick: function onClick(e) {
+        return props.handleFilterChange('SHOW_COMPLETED');
+      }
+    })
+  );
+};
+
+exports.default = VisibilityFilterButtons;
 
 /***/ }),
 
@@ -1108,12 +1178,27 @@ var visibilityFilters = exports.visibilityFilters = {
   SHOW_COMPLETED: 'SHOW_COMPLETED',
   SHOW_ACTIVE: 'SHOW_ACTIVE'
 
-  //ACTION CREATORS
+  //VISIBILITYFilterMethod
+};var filterTodos = exports.filterTodos = function filterTodos(todos, status) {
+  if (status === 'SHOW_COMPLETED') return todos.filter(function (todo) {
+    return todo.completed;
+  });else if (status === 'SHOW_ACTIVE') return todos.filter(function (todo) {
+    return !todo.completed;
+  });else return todos;
+};
 
-};var setVisibilityFilter = exports.setVisibilityFilter = function setVisibilityFilter(filter) {
+//ACTION CREATORS
+
+var setVisibilityFilter = exports.setVisibilityFilter = function setVisibilityFilter(filter) {
   return {
     type: SET_VISIBILITY_FILTER,
     filter: filter
+  };
+};
+
+var setVisibilityFilterDispatch = exports.setVisibilityFilterDispatch = function setVisibilityFilterDispatch(filter) {
+  return function (dispatch) {
+    dispatch(setVisibilityFilter(filter));
   };
 };
 

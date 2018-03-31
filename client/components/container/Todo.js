@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { ToDoInputForm } from '../index'
+import { ToDoInputForm, ToDoList, VisibilityFilterButtons } from '../index'
 import { connect } from 'react-redux'
 import { addNewTodo, fetchAllTodos } from '../../reducers/todos'
+import { setVisibilityFilterDispatch, filterTodos } from '../../reducers/visibilityFilter'
 import Paper from 'material-ui/Paper'
-import { ToDoList } from '../index'
+
 
 class Todo extends Component {
   constructor(props) {
@@ -31,18 +32,18 @@ class Todo extends Component {
 
 
   render() {
+    let todoList = filterTodos(this.props.todos, this.props.visibilityFilter)
     return (
       <div className='todo-Main-Container'>
-        <div className='todo-Form-Container'>
-          <p>Todo List:</p>
-          <ToDoInputForm
-            onChange={this.handleToDoInputChange}
-            value={this.state.currentToDoInput}
-            onSubmit={this.handleSubmit}
-          />
-        </div>
+        <p>Todo List:</p>
+        <ToDoInputForm
+          onChange={this.handleToDoInputChange}
+          value={this.state.currentToDoInput}
+          onSubmit={this.handleSubmit}
+        />
+        <VisibilityFilterButtons handleFilterChange={this.props.handleFilterChange} />
         <div className='todo-List-Container'>
-          <ToDoList todos={this.props.todos} />
+          <ToDoList todos={todoList} />
         </div>
       </div>
     )
@@ -51,7 +52,8 @@ class Todo extends Component {
 
 const mapState = state => {
   return {
-    todos: state.todos
+    todos: state.todos,
+    visibilityFilter: state.visibilityFilter
   }
 }
 
@@ -62,7 +64,11 @@ const mapDispatch = (dispatch, ownProps) => {
     },
     getAllTodosDispatch() {
       dispatch(fetchAllTodos())
+    },
+    handleFilterChange(filter) {
+      dispatch(setVisibilityFilterDispatch(filter))
     }
+
   }
 }
 
