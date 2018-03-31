@@ -12,7 +12,7 @@ const NavBarMenuLinks = [
         value="1"
         primaryText="Home"
       />
-    ),
+    )
   },
   {
     data: (
@@ -21,6 +21,16 @@ const NavBarMenuLinks = [
         containerElement={<NavLink to={'/todo'} />}
         value="2"
         primaryText="Todo List"
+      />
+    )
+  },
+  {
+    data: (
+      <MenuItem
+        key={3}
+        containerElement={<NavLink to={'/weather'} />}
+        value="3"
+        primaryText="Weather"
       />
     ),
   }

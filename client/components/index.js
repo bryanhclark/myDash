@@ -10,6 +10,7 @@ export { default as ToDoList } from './presentational/ToDoList'
 export { default as ToDoInputForm } from './presentational/ToDoInputForm'
 export { default as ToDoListItem } from './presentational/ToDoListItem'
 export { default as VisibilityFilterButtons } from './presentational/VisibilityFilterButtons'
+export { default as WeatherInputForm } from './presentational/WeatherInputForm'
 
 //utility components
 export { default as IconMenuDropDown } from './utility/IconMenuDropDown'
