@@ -2,7 +2,9 @@ const router = require('express').Router()
 const { ToDos } = require('../db/models')
 
 router.get('/', (req, res, next) => {
-  ToDos.findAll()
+  ToDos.findAll({
+    order: [['id', 'ASC']]
+  })
     .then(todos => {
       res.json(todos)
     })
@@ -10,11 +12,21 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-
   ToDos.create({
     data: req.body.todo
   })
     .then(todo => res.json(todo))
+    .catch(next)
+})
+
+router.put('/', (req, res, next) => {
+  ToDos.update(
+    { completed: req.body.data.todo.completed },
+    {
+      where: { id: req.body.data.todo.id },
+      returning: true
+    })
+    .spread((numUpdates, updatedStudent) => res.json(updatedStudent[0]))
     .catch(next)
 })
 

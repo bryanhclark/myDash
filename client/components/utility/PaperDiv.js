@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Paper from 'material-ui/Paper'
 import { Button } from '../index'
 import { connect } from 'react-redux'
-import { deleteToDo } from '../../reducers/todos'
+import { deleteToDo, toggleTodoThunk } from '../../reducers/todos'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 
 
@@ -46,6 +46,11 @@ class PaperDiv extends Component {
           buttonClass={this.state.buttonClass}
           mini={true}
           icon={<ModeEdit />} />
+        <Button
+          onClick={() => this.props.handleToggleDispatch(this.props.children.props.todo, !this.props.children.props.todo.completed)}
+          buttonClass={this.state.buttonClass}
+          mini={true}
+          icon={<ModeEdit />} />
       </div>
     )
   }
@@ -57,6 +62,10 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     handleDelete(e, todoId) {
       dispatch(deleteToDo(todoId))
+    },
+    handleToggleDispatch(todo, status) {
+      todo.completed = status
+      dispatch(toggleTodoThunk(todo))
     }
   }
 }

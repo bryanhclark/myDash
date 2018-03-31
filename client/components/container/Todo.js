@@ -31,6 +31,7 @@ class Todo extends Component {
   }
 
 
+
   render() {
     let todoList = filterTodos(this.props.todos, this.props.visibilityFilter)
     return (
@@ -43,7 +44,7 @@ class Todo extends Component {
         />
         <VisibilityFilterButtons handleFilterChange={this.props.handleFilterChange} />
         <div className='todo-List-Container'>
-          <ToDoList todos={todoList} />
+          <ToDoList todos={todoList} handleToggle={this.props.handleToggle} />
         </div>
       </div>
     )

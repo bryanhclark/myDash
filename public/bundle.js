@@ -362,7 +362,7 @@ var Todo = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'todo-List-Container' },
-          _react2.default.createElement(_index.ToDoList, { todos: todoList })
+          _react2.default.createElement(_index.ToDoList, { todos: todoList, handleToggle: this.props.handleToggle })
         )
       );
     }
@@ -951,6 +951,13 @@ var PaperDiv = function (_Component) {
           },
           buttonClass: this.state.buttonClass,
           mini: true,
+          icon: _react2.default.createElement(_modeEdit2.default, null) }),
+        _react2.default.createElement(_index.Button, {
+          onClick: function onClick() {
+            return _this2.props.handleToggleDispatch(_this2.props.children.props.todo, !_this2.props.children.props.todo.completed);
+          },
+          buttonClass: this.state.buttonClass,
+          mini: true,
           icon: _react2.default.createElement(_modeEdit2.default, null) })
       );
     }
@@ -963,6 +970,10 @@ var mapDispatch = function mapDispatch(dispatch, ownProps) {
   return {
     handleDelete: function handleDelete(e, todoId) {
       dispatch((0, _todos.deleteToDo)(todoId));
+    },
+    handleToggleDispatch: function handleToggleDispatch(todo, status) {
+      todo.completed = status;
+      dispatch((0, _todos.toggleTodoThunk)(todo));
     }
   };
 };
@@ -1082,7 +1093,7 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteToDo = exports.addNewTodo = exports.fetchAllTodos = undefined;
+exports.deleteToDo = exports.toggleTodoThunk = exports.addNewTodo = exports.fetchAllTodos = undefined;
 
 var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
@@ -1095,6 +1106,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //action types
 var GET_TODOS = 'GET_TODOS';
 var ADD_TODOS = 'ADD_TODOS';
+var TOGGLE_TODO = 'TOGGLE_TODO';
 var DELETE_TODO = 'DELETE_TODO';
 
 //ACTION CREATORS
@@ -1104,6 +1116,10 @@ var getTodos = function getTodos(todos) {
 
 var addTodos = function addTodos(newTodo) {
   return { type: ADD_TODOS, newTodo: newTodo };
+};
+
+var toggleTodo = function toggleTodo(todo) {
+  return { type: TOGGLE_TODO, todo: todo };
 };
 
 var deleteTodo = function deleteTodo(todoId) {
@@ -1128,6 +1144,15 @@ var addNewTodo = exports.addNewTodo = function addNewTodo(todo) {
   };
 };
 
+var toggleTodoThunk = exports.toggleTodoThunk = function toggleTodoThunk(todo) {
+  console.log('in thunk,', todo);
+  return function (dispatch) {
+    _axios2.default.put('/api/todos', { data: { todo: todo } }).then(function (res) {
+      return dispatch(toggleTodo(todo));
+    }).catch(console.error);
+  };
+};
+
 var deleteToDo = exports.deleteToDo = function deleteToDo(todoId) {
   return function (dispatch) {
     _axios2.default.delete('/api/todos', { params: { todoId: todoId } }).then(function () {
@@ -1145,6 +1170,10 @@ exports.default = function () {
       return action.todos;
     case ADD_TODOS:
       return [].concat(_toConsumableArray(state), [action.newTodo]);
+    case TOGGLE_TODO:
+      return state.map(function (todo) {
+        if (todo.id === action.todo.id) return action.todo;else return todo;
+      });
     case DELETE_TODO:
       return state.filter(function (todo) {
         return todo.id !== action.todoId;
