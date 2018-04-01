@@ -4,6 +4,7 @@ export { default as App } from './App'
 export { default as Home } from './container/Home'
 export { default as NavBar } from './container/NavBar'
 export { default as Todo } from './container/Todo'
+export { default as Weather } from './container/Weather'
 
 //presentational components
 export { default as ToDoList } from './presentational/ToDoList'

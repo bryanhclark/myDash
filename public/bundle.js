@@ -123,7 +123,8 @@ var App = function (_Component) {
           _reactRouterDom.Switch,
           null,
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _index.Home }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/todo', component: _index.Todo })
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/todo', component: _index.Todo }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/weather', component: _index.Weather })
         )
       );
     }
@@ -396,6 +397,106 @@ exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Todo);
 
 /***/ }),
 
+/***/ "./client/components/container/Weather.js":
+/*!************************************************!*\
+  !*** ./client/components/container/Weather.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _index = __webpack_require__(/*! ../index */ "./client/components/index.js");
+
+var _weather = __webpack_require__(/*! ../../reducers/weather */ "./client/reducers/weather.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Weather = function (_Component) {
+  _inherits(Weather, _Component);
+
+  function Weather(props) {
+    _classCallCheck(this, Weather);
+
+    var _this = _possibleConstructorReturn(this, (Weather.__proto__ || Object.getPrototypeOf(Weather)).call(this, props));
+
+    _this.state = {
+      weatherInput: ''
+    };
+    _this.handleWeatherInputChange = _this.handleWeatherInputChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(Weather, [{
+    key: 'handleWeatherInputChange',
+    value: function handleWeatherInputChange(e) {
+      this.setState({ weatherInput: e.target.value });
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(e, weather) {
+      this.props.handleSubmitDispatch(weather);
+      this.setState({ weatherInput: '' });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'weather-Main-Container' },
+        _react2.default.createElement(
+          'p',
+          null,
+          'Weather Input'
+        ),
+        _react2.default.createElement(_index.WeatherInputForm, {
+          value: this.state.weatherInput,
+          onChange: this.handleWeatherInputChange,
+          onSubmit: this.handleSubmit
+        })
+      );
+    }
+  }]);
+
+  return Weather;
+}(_react.Component);
+
+var mapState = function mapState(state) {
+  return {};
+};
+
+var mapDispatch = function mapDispatch(dispatch) {
+  return {
+    handleSubmitDispatch: function handleSubmitDispatch(weather) {
+      dispatch((0, _weather.fetchWeather)(weather));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Weather);
+
+/***/ }),
+
 /***/ "./client/components/index.js":
 /*!************************************!*\
   !*** ./client/components/index.js ***!
@@ -446,6 +547,15 @@ Object.defineProperty(exports, 'Todo', {
   }
 });
 
+var _Weather = __webpack_require__(/*! ./container/Weather */ "./client/components/container/Weather.js");
+
+Object.defineProperty(exports, 'Weather', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Weather).default;
+  }
+});
+
 var _ToDoList = __webpack_require__(/*! ./presentational/ToDoList */ "./client/components/presentational/ToDoList.js");
 
 Object.defineProperty(exports, 'ToDoList', {
@@ -479,6 +589,15 @@ Object.defineProperty(exports, 'VisibilityFilterButtons', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_VisibilityFilterButtons).default;
+  }
+});
+
+var _WeatherInputForm = __webpack_require__(/*! ./presentational/WeatherInputForm */ "./client/components/presentational/WeatherInputForm.js");
+
+Object.defineProperty(exports, 'WeatherInputForm', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_WeatherInputForm).default;
   }
 });
 
@@ -710,6 +829,57 @@ exports.default = VisibilityFilterButtons;
 
 /***/ }),
 
+/***/ "./client/components/presentational/WeatherInputForm.js":
+/*!**************************************************************!*\
+  !*** ./client/components/presentational/WeatherInputForm.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TextField = __webpack_require__(/*! material-ui/TextField */ "./node_modules/material-ui/TextField/index.js");
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var WeatherInputForm = function WeatherInputForm(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'weather-Form-Conatiner' },
+    _react2.default.createElement(_TextField2.default, {
+      id: 'weather-Input-TextField',
+      onChange: props.onChange,
+      value: props.value
+    }),
+    _react2.default.createElement(_RaisedButton2.default, {
+      id: 'weather-Submit-Button',
+      label: 'Submit',
+      onClick: function onClick(e) {
+        return props.onSubmit(e, props.value);
+      }
+    })
+  );
+};
+
+exports.default = WeatherInputForm;
+
+/***/ }),
+
 /***/ "./client/components/utility/Button.js":
 /*!*********************************************!*\
   !*** ./client/components/utility/Button.js ***!
@@ -846,6 +1016,13 @@ var NavBarMenuLinks = [{
     containerElement: _react2.default.createElement(_reactRouterDom.NavLink, { to: '/todo' }),
     value: '2',
     primaryText: 'Todo List'
+  })
+}, {
+  data: _react2.default.createElement(_MenuItem2.default, {
+    key: 3,
+    containerElement: _react2.default.createElement(_reactRouterDom.NavLink, { to: '/weather' }),
+    value: '3',
+    primaryText: 'Weather'
   })
 }];
 
@@ -1243,6 +1420,44 @@ exports.default = function () {
     default:
       return state;
   }
+};
+
+/***/ }),
+
+/***/ "./client/reducers/weather.js":
+/*!************************************!*\
+  !*** ./client/reducers/weather.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchWeather = undefined;
+
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//ACTION TYPES
+var GET_WEATHER = 'GET_WEATHER';
+
+//ACTION CREATORS
+var getWeather = function getWeather(weather) {
+  return { type: GET_WEATHER, weather: weather };
+};
+
+//THUNKS
+var fetchWeather = exports.fetchWeather = function fetchWeather(location) {
+  return function (dispatch) {
+    _axios2.default.get('/api/weather');
+  };
 };
 
 /***/ }),

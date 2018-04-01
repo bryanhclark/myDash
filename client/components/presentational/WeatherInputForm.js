@@ -8,13 +8,12 @@ const WeatherInputForm = props => (
       id='weather-Input-TextField'
       onChange={props.onChange}
       value={props.value}
-    >
-      <RaisedButton
-        id='weather-Submit-Button'
-        label='Submit'
-        onClick={(e) => props.onSubmit(e, props.value)}
-      />
-    </TextField>
+    />
+    <RaisedButton
+      id='weather-Submit-Button'
+      label='Submit'
+      onClick={(e) => props.onSubmit(e, props.value)}
+    />
   </div>
 )
 
