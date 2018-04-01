@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ToDoInputForm, ToDoList, VisibilityFilterButtons } from '../index'
+import { ToDoList, VisibilityFilterButtons, InputForm } from '../index'
 import { connect } from 'react-redux'
 import { addNewTodo, fetchAllTodos } from '../../reducers/todos'
 import { setVisibilityFilterDispatch, filterTodos } from '../../reducers/visibilityFilter'
@@ -37,9 +37,11 @@ class Todo extends Component {
     return (
       <div className='todo-Main-Container'>
         <p>Todo List:</p>
-        <ToDoInputForm
-          onChange={this.handleToDoInputChange}
+        <InputForm
+          divClass='todo-Input-Div'
+          textfieldId='todo-TextField'
           value={this.state.currentToDoInput}
+          onChange={this.handleToDoInputChange}
           onSubmit={this.handleSubmit}
         />
         <VisibilityFilterButtons handleFilterChange={this.props.handleFilterChange} />

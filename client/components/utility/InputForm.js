@@ -2,15 +2,16 @@ import React from 'react'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 
-const WeatherInputForm = props => (
-  <div className='weather-Form-Conatiner'>
+
+const InputForm = props => (
+  <div className={props.divClass}>
     <TextField
-      id='weather-Input-TextField'
-      onChange={props.onChange}
+      id={props.textfieldId}
       value={props.value}
+      onChange={props.onChange}
     />
     <RaisedButton
-      id='weather-Submit-Button'
+      id={props.buttonId}
       label='Submit'
       onClick={(e) => props.onSubmit(e, props.value)}
     />
@@ -18,4 +19,6 @@ const WeatherInputForm = props => (
 )
 
 
-export default WeatherInputForm
+export default InputForm
+
+

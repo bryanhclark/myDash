@@ -7,11 +7,13 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 //sub-reducers:
 import todos from './todos'
 import visibilityFilter from './visibilityFilter'
+import weather from './weather'
 
 
 const reducer = combineReducers({
   todos,
-  visibilityFilter
+  visibilityFilter,
+  weather
 })
 
 const middleware = composeWithDevTools(applyMiddleware(

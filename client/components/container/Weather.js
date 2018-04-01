@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { WeatherInputForm } from '../index'
+import { WeatherDisplay, InputForm } from '../index'
 import { fetchWeather } from '../../reducers/weather'
 
 
@@ -21,27 +21,35 @@ class Weather extends Component {
   }
 
   handleSubmit(e, weather) {
-    this.props.handleSubmitDispatch(weather)
+    let myWeather = weather.replace(/[^a-zA-Z\d\w\s]/g, '').split(' ').join('+')
+    this.props.handleSubmitDispatch(myWeather)
     this.setState({ weatherInput: '' })
   }
 
 
   render() {
+    console.log(this.props.weather)
+    const weatherDisplay = this.props.weather.length > 0 ? <WeatherDisplay weather={this.props.weather} /> : <p>Loading</p>
     return (
       <div className='weather-Main-Container'>
         <p>Weather Input</p>
-        <WeatherInputForm
+        <InputForm
+          divClass='weather-Input-Div'
+          textfieldId='weather-Textfield'
           value={this.state.weatherInput}
           onChange={this.handleWeatherInputChange}
           onSubmit={this.handleSubmit}
         />
+        {weatherDisplay}
       </div>
     )
   }
 }
 
 const mapState = state => {
-  return {}
+  return {
+    weather: state.weather
+  }
 }
 
 const mapDispatch = dispatch => {

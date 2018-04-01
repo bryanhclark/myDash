@@ -354,9 +354,11 @@ var Todo = function (_Component) {
           null,
           'Todo List:'
         ),
-        _react2.default.createElement(_index.ToDoInputForm, {
-          onChange: this.handleToDoInputChange,
+        _react2.default.createElement(_index.InputForm, {
+          divClass: 'todo-Input-Div',
+          textfieldId: 'todo-TextField',
           value: this.state.currentToDoInput,
+          onChange: this.handleToDoInputChange,
           onSubmit: this.handleSubmit
         }),
         _react2.default.createElement(_index.VisibilityFilterButtons, { handleFilterChange: this.props.handleFilterChange }),
@@ -455,12 +457,19 @@ var Weather = function (_Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e, weather) {
-      this.props.handleSubmitDispatch(weather);
+      var myWeather = weather.replace(/[^a-zA-Z\d\w\s]/g, '').split(' ').join('+');
+      this.props.handleSubmitDispatch(myWeather);
       this.setState({ weatherInput: '' });
     }
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props.weather);
+      var weatherDisplay = this.props.weather.length > 0 ? _react2.default.createElement(_index.WeatherDisplay, { weather: this.props.weather }) : _react2.default.createElement(
+        'p',
+        null,
+        'Loading'
+      );
       return _react2.default.createElement(
         'div',
         { className: 'weather-Main-Container' },
@@ -469,11 +478,14 @@ var Weather = function (_Component) {
           null,
           'Weather Input'
         ),
-        _react2.default.createElement(_index.WeatherInputForm, {
+        _react2.default.createElement(_index.InputForm, {
+          divClass: 'weather-Input-Div',
+          textfieldId: 'weather-Textfield',
           value: this.state.weatherInput,
           onChange: this.handleWeatherInputChange,
           onSubmit: this.handleSubmit
-        })
+        }),
+        weatherDisplay
       );
     }
   }]);
@@ -482,7 +494,9 @@ var Weather = function (_Component) {
 }(_react.Component);
 
 var mapState = function mapState(state) {
-  return {};
+  return {
+    weather: state.weather
+  };
 };
 
 var mapDispatch = function mapDispatch(dispatch) {
@@ -565,15 +579,6 @@ Object.defineProperty(exports, 'ToDoList', {
   }
 });
 
-var _ToDoInputForm = __webpack_require__(/*! ./presentational/ToDoInputForm */ "./client/components/presentational/ToDoInputForm.js");
-
-Object.defineProperty(exports, 'ToDoInputForm', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_ToDoInputForm).default;
-  }
-});
-
 var _ToDoListItem = __webpack_require__(/*! ./presentational/ToDoListItem */ "./client/components/presentational/ToDoListItem.js");
 
 Object.defineProperty(exports, 'ToDoListItem', {
@@ -592,12 +597,12 @@ Object.defineProperty(exports, 'VisibilityFilterButtons', {
   }
 });
 
-var _WeatherInputForm = __webpack_require__(/*! ./presentational/WeatherInputForm */ "./client/components/presentational/WeatherInputForm.js");
+var _WeatherDisplay = __webpack_require__(/*! ./presentational/WeatherDisplay */ "./client/components/presentational/WeatherDisplay.js");
 
-Object.defineProperty(exports, 'WeatherInputForm', {
+Object.defineProperty(exports, 'WeatherDisplay', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_WeatherInputForm).default;
+    return _interopRequireDefault(_WeatherDisplay).default;
   }
 });
 
@@ -637,58 +642,16 @@ Object.defineProperty(exports, 'Button', {
   }
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _InputForm = __webpack_require__(/*! ./utility/InputForm */ "./client/components/utility/InputForm.js");
 
-/***/ }),
-
-/***/ "./client/components/presentational/ToDoInputForm.js":
-/*!***********************************************************!*\
-  !*** ./client/components/presentational/ToDoInputForm.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
+Object.defineProperty(exports, 'InputForm', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_InputForm).default;
+  }
 });
 
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _TextField = __webpack_require__(/*! material-ui/TextField */ "./node_modules/material-ui/TextField/index.js");
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
-var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ToDoInputForm = function ToDoInputForm(props) {
-    return _react2.default.createElement(
-        'div',
-        { className: 'todo-Form-Container' },
-        _react2.default.createElement(_TextField2.default, {
-            id: 'todo-Input-TextField',
-            onChange: props.onChange,
-            value: props.value
-        }),
-        _react2.default.createElement(_RaisedButton2.default, {
-            id: 'todo-Submit-Button',
-            label: 'Submit',
-            onClick: function onClick(e) {
-                return props.onSubmit(e, props.value);
-            }
-        })
-    );
-};
-
-exports.default = ToDoInputForm;
 
 /***/ }),
 
@@ -829,10 +792,10 @@ exports.default = VisibilityFilterButtons;
 
 /***/ }),
 
-/***/ "./client/components/presentational/WeatherInputForm.js":
-/*!**************************************************************!*\
-  !*** ./client/components/presentational/WeatherInputForm.js ***!
-  \**************************************************************/
+/***/ "./client/components/presentational/WeatherDisplay.js":
+/*!************************************************************!*\
+  !*** ./client/components/presentational/WeatherDisplay.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -847,36 +810,28 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TextField = __webpack_require__(/*! material-ui/TextField */ "./node_modules/material-ui/TextField/index.js");
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
-var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var WeatherInputForm = function WeatherInputForm(props) {
+var WeatherDisplay = function WeatherDisplay(props) {
+  console.log('in weather display', props.weather);
   return _react2.default.createElement(
     'div',
-    { className: 'weather-Form-Conatiner' },
-    _react2.default.createElement(_TextField2.default, {
-      id: 'weather-Input-TextField',
-      onChange: props.onChange,
-      value: props.value
-    }),
-    _react2.default.createElement(_RaisedButton2.default, {
-      id: 'weather-Submit-Button',
-      label: 'Submit',
-      onClick: function onClick(e) {
-        return props.onSubmit(e, props.value);
-      }
-    })
+    { className: 'weather-Display-Container' },
+    _react2.default.createElement(
+      'ul',
+      { className: 'weather-List' },
+      props.weather.map(function (weather, index) {
+        return _react2.default.createElement(
+          'li',
+          { key: index },
+          weather.address + ' ' + weather.currently.summary
+        );
+      })
+    )
   );
 };
 
-exports.default = WeatherInputForm;
+exports.default = WeatherDisplay;
 
 /***/ }),
 
@@ -974,6 +929,57 @@ var IconMenuDropDown = function IconMenuDropDown(props) {
 };
 
 exports.default = IconMenuDropDown;
+
+/***/ }),
+
+/***/ "./client/components/utility/InputForm.js":
+/*!************************************************!*\
+  !*** ./client/components/utility/InputForm.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TextField = __webpack_require__(/*! material-ui/TextField */ "./node_modules/material-ui/TextField/index.js");
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ "./node_modules/material-ui/RaisedButton/index.js");
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var InputForm = function InputForm(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: props.divClass },
+    _react2.default.createElement(_TextField2.default, {
+      id: props.textfieldId,
+      value: props.value,
+      onChange: props.onChange
+    }),
+    _react2.default.createElement(_RaisedButton2.default, {
+      id: props.buttonId,
+      label: 'Submit',
+      onClick: function onClick(e) {
+        return props.onSubmit(e, props.value);
+      }
+    })
+  );
+};
+
+exports.default = InputForm;
 
 /***/ }),
 
@@ -1241,13 +1247,20 @@ var _visibilityFilter = __webpack_require__(/*! ./visibilityFilter */ "./client/
 
 var _visibilityFilter2 = _interopRequireDefault(_visibilityFilter);
 
+var _weather = __webpack_require__(/*! ./weather */ "./client/reducers/weather.js");
+
+var _weather2 = _interopRequireDefault(_weather);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//sub-reducers:
 var reducer = (0, _redux.combineReducers)({
   todos: _todos2.default,
-  visibilityFilter: _visibilityFilter2.default
+  visibilityFilter: _visibilityFilter2.default,
+  weather: _weather2.default
 });
+
+//sub-reducers:
+
 
 var middleware = (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)({ collapsed: true })));
 
@@ -1445,6 +1458,8 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 //ACTION TYPES
 var GET_WEATHER = 'GET_WEATHER';
 
@@ -1456,8 +1471,22 @@ var getWeather = function getWeather(weather) {
 //THUNKS
 var fetchWeather = exports.fetchWeather = function fetchWeather(location) {
   return function (dispatch) {
-    _axios2.default.get('/api/weather');
+    _axios2.default.get('/api/weather', { params: { location: location } }).then(function (res) {
+      return dispatch(getWeather(res.data));
+    }).catch(console.error);
   };
+};
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case GET_WEATHER:
+      return [].concat(_toConsumableArray(state), [action.weather]);
+    default:
+      return state;
+  }
 };
 
 /***/ }),

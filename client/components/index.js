@@ -8,13 +8,13 @@ export { default as Weather } from './container/Weather'
 
 //presentational components
 export { default as ToDoList } from './presentational/ToDoList'
-export { default as ToDoInputForm } from './presentational/ToDoInputForm'
 export { default as ToDoListItem } from './presentational/ToDoListItem'
 export { default as VisibilityFilterButtons } from './presentational/VisibilityFilterButtons'
-export { default as WeatherInputForm } from './presentational/WeatherInputForm'
+export { default as WeatherDisplay } from './presentational/WeatherDisplay'
 
 //utility components
 export { default as IconMenuDropDown } from './utility/IconMenuDropDown'
 export { default as NavBarMenuLinks } from './utility/NavBarMenuLinks'
 export { default as PaperDiv } from './utility/PaperDiv'
 export { default as Button } from './utility/Button'
+export { default as InputForm } from './utility/InputForm'

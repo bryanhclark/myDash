@@ -12,6 +12,18 @@ const getWeather = weather => {
 //THUNKS
 export const fetchWeather = location => {
   return dispatch => {
-    axios.get('/api/weather')
+    axios.get('/api/weather', { params: { location } })
+      .then(res => dispatch(getWeather(res.data)))
+      .catch(console.error)
+  }
+}
+
+
+export default (state = [], action) => {
+  switch (action.type) {
+    case GET_WEATHER:
+      return [...state, action.weather]
+    default:
+      return state
   }
 }
